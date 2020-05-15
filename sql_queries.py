@@ -138,13 +138,11 @@ songplay_table_insert = """
     start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
   )
   SELECT
-    e.ts, e.userId, e.level, s.song_id, s.artist_id, e.session_id, e.location, e.userAgent
+    distinct e.ts, e.userId, e.level, s.song_id, s.artist_id, e.session_id, e.location, e.userAgent
   FROM
     staging_events e
     INNER JOIN staging_songs s ON e.song = s.title AND e.artist = s.artist_name
     WHERE e.page = 'NextSong'
-  GROUP BY 
-    e.ts, e.userId, e.level, s.song_id, s.artist_id, e.session_id, e.location, e.userAgent
 """
 
 user_table_insert = """
@@ -152,13 +150,11 @@ user_table_insert = """
     user_id, first_name, last_name, gender, level
   )
   SELECT
-    userId, firstName, lastName, gender, level
+    distinct userId, firstName, lastName, gender, level
   FROM
     staging_events
   WHERE 
     page = 'NextSong'
-  GROUP BY 
-    userId, firstName, lastName, gender, level
 """
 
 song_table_insert = """
@@ -166,11 +162,9 @@ song_table_insert = """
     song_id, title, artist_id, year, duration
   )
   SELECT
-    song_id, title, artist_id, year, duration
+    distinct song_id, title, artist_id, year, duration
   FROM
     staging_songs
-  GROUP BY 
-    song_id, title, artist_id, year, duration
 """
 
 artist_table_insert = """
@@ -178,11 +172,9 @@ artist_table_insert = """
     artist_id, name, location, latitude, longitude   
   )
   SELECT
-    artist_id, artist_name, artist_location, artist_latitude, artist_longitude
+    distinct artist_id, artist_name, artist_location, artist_latitude, artist_longitude
   FROM
     staging_songs
-  GROUP BY 
-    artist_id, artist_name, artist_location, artist_latitude, artist_longitude
 """
 
 time_table_insert = """
