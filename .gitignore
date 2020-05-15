@@ -1,0 +1,6 @@
+secrets.cfg
+log_data
+song_data
+log_json_path.json
+__pycache__
+.ipynb_checkpoints
